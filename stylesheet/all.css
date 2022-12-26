@@ -10768,4 +10768,16 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+img {
+  object-fit: contain;
+  max-width: 100%;
+}
+
+.primary-image {
+  height: 300px;
+}
+
+.images {
+  height: 150px;
 }/*# sourceMappingURL=all.css.map */
