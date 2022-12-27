@@ -96,7 +96,7 @@
 
                             <!-- 產品圖陣列 -->
                             <div class="row row-cols-3">
-                                <div v-for="(image,index) in tempProduct.imagesUrl" :key="index+1" class="col">
+                                <div v-for="image in tempProduct.imagesUrl" :key="image" class="col">
                                     <div class="ratio ratio-4x3">
                                         <img v-if="image" :src="image" class="rounded" @click="changeImage(image)">
                                     </div>
