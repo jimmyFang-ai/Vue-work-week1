@@ -12,89 +12,99 @@
 <body>
 
     <div id="app">
+        <section class="py-5">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-lg-2  gy-5 gy-lg-0">
+                    <div class="col">
+                        <h2>產品列表</h2>
+                        <table class="table table-hover mt-4">
+                            <thead>
+                                <tr>
+                                    <th width="15%">產品名稱</th>
+                                    <th width="15%">
+                                        原價
+                                    </th>
+                                    <th width="15%">
+                                        售價
+                                    </th>
+                                    <th width="15%">
+                                        是否啟用
+                                    </th>
+                                    <th width="20%">
+                                        查看細節
+                                    </th>
+                                    <th width="20%">
+                                        刪除品項
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 列表渲染 v-for -->
+                                <tr v-for="product in products" :key="product.id">
+                                    <td>{{ product.title}}</td>
+                                    <td>
+                                        {{ product.origin_price}}
+                                    </td>
+                                    <td>
+                                        {{ product.price}}
+                                    </td>
+                                    <td>
+                                        <span v-if="product.is_enabled" class="text-success">啟用</span>
+                                        <span v-else>未啟用</span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary"
+                                            @click="viewProduct(product)">查看細節</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger"
+                                            @click="deleteProduct(product.id)">刪除品項</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>目前有 <span>{{ products.length}}</span> 項產品</p>
+                    </div>
 
 
-        <div class="container">
-            <div class="row py-3">
-                <div class="col-md-6">
-                    <h2>產品列表</h2>
-                    <table class="table table-hover mt-4">
-                        <thead>
-                            <tr>
-                                <th width="150">產品名稱</th>
-                                <th width="120">
-                                    原價
-                                </th>
-                                <th width="120">
-                                    售價
-                                </th>
-                                <th width="150">
-                                    是否啟用
-                                </th>
-                                <th width="120">
-                                    查看細節
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- 列表渲染 v-for -->
-                            <tr v-for="product in products" :key="product.id">
-                                <td width="150">{{ product.title}}</td>
-                                <td width="120">
-                                    {{ product.origin_price}}
-                                </td>
-                                <td width="120">
-                                    {{ product.price}}
-                                </td>
-                                <td width="150">
-                                    <span v-if="product.is_enabled" class="text-success">啟用</span>
-                                    <span v-else>未啟用</span>
-                                </td>
-                                <td width="120">
-                                    <button type="button" class="btn btn-primary"
-                                        @click="viewProduct(product)">查看細節</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p>目前有 <span>{{ products.length}}</span> 項產品</p>
-                </div>
+                    <div class="col">
+                        <h2>單一產品細節</h2>
 
-
-                <div class="col-md-6">
-                    <h2>單一產品細節</h2>
-
-                    <template v-if="temp.id">
-                        <div class="card mb-3">
-                            <img :src="temp.imageUrl" class="card-img-top primary-image" alt="主圖">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    {{ temp.title}}
-                                    <span class="badge bg-primary ms-2">{{ temp.category}}</span>
-                                </h5>
-                                <p class="card-text">商品描述：{{ temp.description}}</p>
-                                <p class="card-text">商品內容：{{ temp.content}}</p>
-                                <div class="d-flex">
-                                    <p class="card-text me-2">{{temp.price }}</p>
-                                    <p class="card-text text-secondary"><del>{{ temp.origin_price}}</del></p>
-                                    {{temp.unit}}/ 元
+                        <!-- 使用  template 標籤在編譯時，不會生成 html 結構-->
+                        <template v-if="temp.id">
+                            <div class="card mb-3">
+                                <img :src="temp.imageUrl" class="card-img-top primary-image" alt="主圖">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ temp.title}}
+                                        <span class="badge bg-primary ms-2">{{ temp.category}}</span>
+                                    </h5>
+                                    <p class="card-text">商品描述：{{ temp.description}}</p>
+                                    <p class="card-text">商品內容：{{ temp.content}}</p>
+                                    <div class="d-flex">
+                                        <p class="card-text me-2">{{temp.price }}</p>
+                                        <p class="card-text text-secondary"><del>{{ temp.origin_price}}</del></p>
+                                        {{temp.unit}}/ 元
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
 
 
-                        <!-- 產品圖陣列 -->
-                        <template v-for="(image,index) in temp.imagesUrl" :key="index+1">
-                            <img v-if="image" :src="image" class="images m-2" @click="changeImage(image)">
+                            <!-- 產品圖陣列 -->
+                            <template v-for="(image,index) in temp.imagesUrl" :key="index+1">
+                                <img v-if="image" :src="image" class="images m-2" @click="changeImage(image)">
+                            </template>
+
                         </template>
 
-                    </template>
-
-                    <p v-else class="text-secondary">請選擇一個商品查看</p>
+                        <p v-else class="text-secondary">請選擇一個商品查看</p>
+                    </div>
                 </div>
             </div>
-        </div>
+
+        </section>
+
     </div>
 
 
@@ -136,7 +146,7 @@
                 num: 10,
                 imageUrl: "https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
                 imagesUrl: [
-                "https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
+                    "https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
                     "https://images.unsplash.com/photo-1626094309830-abbb0c99da4a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2832&q=80",
                     "https://images.unsplash.com/photo-1559656914-a30970c1affd?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY0fHxkb251dHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
                 ]
@@ -154,7 +164,7 @@
                 num: 1,
                 imageUrl: "https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1001&q=80",
                 imagesUrl: [
-                "https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1001&q=80",
+                    "https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1001&q=80",
                     "https://images.unsplash.com/photo-1618888007540-2bdead974bbb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=987&q=80",
                 ]
             },
@@ -196,6 +206,11 @@
                 viewProduct(product) {
                     // 避免物件參考特性傳入的 product 要使用拷貝方式賦予到 temp 物件
                     this.temp = { ...product };
+                },
+                // 刪除單一產品
+                deleteProduct(id) {
+                    this.products = this.products.filter(product => product.id !== id);
+                    console.log(id,'已被刪除');
                 },
                 // 點擊小圖換大圖
                 changeImage(item) {
