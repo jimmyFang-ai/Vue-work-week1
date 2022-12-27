@@ -209,8 +209,12 @@
                 },
                 // 刪除單一產品
                 deleteProduct(id) {
-                    this.products = this.products.filter(product => product.id !== id);
-                    console.log(id,'已被刪除');
+                    alert(`確定要刪除產品編號 ${id} 嗎?`)
+                    this.products.splice(id, 1);
+
+                    // 刪除後產品後，把 temp 清空
+                    // 避免刪除產品後，單一產品還會顯示資訊
+                    this.temp = {};
                 },
                 // 點擊小圖換大圖
                 changeImage(item) {
@@ -224,6 +228,7 @@
             },
         };
 
+        // 將 App 元件生成並掛載到 html DOM 節點上
         createApp(App).mount('#app');
 
 
