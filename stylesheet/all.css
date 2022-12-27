@@ -10770,14 +10770,5 @@ textarea.form-control-lg {
   }
 }
 img {
-  object-fit: contain;
-  max-width: 100%;
-}
-
-.primary-image {
-  height: 300px;
-}
-
-.images {
-  height: 150px;
+  object-fit: cover;
 }/*# sourceMappingURL=all.css.map */

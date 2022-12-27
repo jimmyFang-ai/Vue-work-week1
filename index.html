@@ -73,7 +73,10 @@
                         <!-- 使用  template 標籤在編譯時，不會生成 html 結構-->
                         <template v-if="temp.id">
                             <div class="card mb-3">
-                                <img :src="temp.imageUrl" class="card-img-top primary-image" alt="主圖">
+                                <div class="ratio ratio-4x3">
+                                    <img :src="temp.imageUrl" class="card-img-top" alt="主圖">
+                                </div>
+                                <!-- <img :src="temp.imageUrl" class="card-img-top primary-image" alt="主圖"> -->
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         {{ temp.title}}
@@ -92,9 +95,16 @@
 
 
                             <!-- 產品圖陣列 -->
-                            <template v-for="(image,index) in temp.imagesUrl" :key="index+1">
-                                <img v-if="image" :src="image" class="images m-2" @click="changeImage(image)">
-                            </template>
+                            <div class="row row-cols-3">
+                                <div v-for="(image,index) in temp.imagesUrl" :key="index+1" class="col">
+                                    <div class="ratio ratio-4x3">
+                                        <img v-if="image" :src="image" class="rounded" @click="changeImage(image)">
+                                    </div>
+
+                                    <!-- <img v-if="image" :src="image" class="images m-2" @click="changeImage(image)"> -->
+                                </div>
+                            </div>
+
 
                         </template>
 
@@ -173,7 +183,7 @@
                 content: "尺寸：6寸",
                 description: "法式煎薄餅加上濃郁可可醬，呈現經典的美味及口感。",
                 id: "-McJ-VyqaFlLzUMmpPpm",
-                is_enabled: 0,
+                is_enabled: 1,
                 origin_price: 700,
                 price: 600,
                 title: "暗黑千層",
