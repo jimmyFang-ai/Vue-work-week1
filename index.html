@@ -49,8 +49,8 @@
                                         {{ product.price}}
                                     </td>
                                     <td>
-                                        <span v-if="product.is_enabled" class="text-success">啟用</span>
-                                        <span v-else>未啟用</span>
+                                        <span :class="{'text-success': product.is_enabled}">{{product.is_enabled ? '啟用'
+                                            : '未啟用'}}</span>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-primary"
@@ -58,7 +58,7 @@
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger"
-                                            @click="deleteProduct(product.id)">刪除品項</button>
+                                            @click="deleteProduct(product)">刪除品項</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -71,23 +71,23 @@
                         <h2>單一產品細節</h2>
 
                         <!-- 使用  template 標籤在編譯時，不會生成 html 結構-->
-                        <template v-if="temp.id">
+                        <template v-if="tempProduct.id">
                             <div class="card mb-3">
                                 <div class="ratio ratio-4x3">
-                                    <img :src="temp.imageUrl" class="card-img-top" alt="主圖">
+                                    <img :src="tempProduct.imageUrl" class="card-img-top" alt="主圖">
                                 </div>
                                 <!-- <img :src="temp.imageUrl" class="card-img-top primary-image" alt="主圖"> -->
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        {{ temp.title}}
-                                        <span class="badge bg-primary ms-2">{{ temp.category}}</span>
+                                        {{ tempProduct.title}}
+                                        <span class="badge bg-primary ms-2">{{ tempProduct.category}}</span>
                                     </h5>
-                                    <p class="card-text">商品描述：{{ temp.description}}</p>
-                                    <p class="card-text">商品內容：{{ temp.content}}</p>
+                                    <p class="card-text">商品描述：{{ tempProduct.description}}</p>
+                                    <p class="card-text">商品內容：{{ tempProduct.content}}</p>
                                     <div class="d-flex">
-                                        <p class="card-text me-2">{{temp.price }}</p>
-                                        <p class="card-text text-secondary"><del>{{ temp.origin_price}}</del></p>
-                                        {{temp.unit}}/ 元
+                                        <p class="card-text me-2">{{tempProduct.price }}</p>
+                                        <p class="card-text text-secondary"><del>{{ tempProduct.origin_price}}</del></p>
+                                        {{tempProduct.unit}}/ 元
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
 
                             <!-- 產品圖陣列 -->
                             <div class="row row-cols-3">
-                                <div v-for="(image,index) in temp.imagesUrl" :key="index+1" class="col">
+                                <div v-for="(image,index) in tempProduct.imagesUrl" :key="index+1" class="col">
                                     <div class="ratio ratio-4x3">
                                         <img v-if="image" :src="image" class="rounded" @click="changeImage(image)">
                                     </div>
@@ -207,7 +207,7 @@
                     // 產品資料格式
                     products: [],
                     // 儲存單一產品
-                    temp: {},
+                    tempProduct: {},
                 }
             },
             // 資料處理方法(物件)
@@ -215,20 +215,24 @@
                 // 查看單一產品細節
                 viewProduct(product) {
                     // 避免物件參考特性傳入的 product 要使用拷貝方式賦予到 temp 物件
-                    this.temp = { ...product };
+                    this.tempProduct = { ...product };
                 },
                 // 刪除單一產品
-                deleteProduct(id) {
-                    alert(`確定要刪除產品編號 ${id} 嗎?`)
-                    this.products.splice(id, 1);
+                deleteProduct(product) {
+                    alert(`確定要刪除產品編號 ${product.title} 嗎?`)
+
+                    // 找出要刪除的產品索引值
+                    const deleteId = this.products.findIndex(item => item.id === product.id);
+                    // 將索引位置帶入並刪除
+                    this.products.splice(deleteId, 1);
 
                     // 刪除後產品後，把 temp 清空
                     // 避免刪除產品後，單一產品還會顯示資訊
-                    this.temp = {};
+                    this.tempProduct = {};
                 },
                 // 點擊小圖換大圖
-                changeImage(item) {
-                    this.temp.imageUrl = item;
+                changeImage(img) {
+                    this.tempProduct.imageUrl = img;
                 }
             },
             // 生命週期(函式)
