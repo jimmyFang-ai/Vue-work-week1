@@ -1,6 +1,9 @@
 // 使用 ES module 引入 Vue 3 cdn 
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.esm-browser.min.js';
 
+// 引入 utils.js 的 swalMassage
+import { swalMassage } from './utils.js';
+
 // 引入 api.js 的 login api
 import { apiLogin } from './api.js';
 
@@ -27,15 +30,13 @@ createApp({
                     // 登入成功後，把 token 和 expired 存到瀏覽器的 cookie
                     // expired 要將時間厝使用 new Date 轉為時間格式
                     document.cookie = `vegenToken=${token}; expires=${new Date(expired)};`;
-
-                    alert("登入成功");
+                    swalMassage('登入成功', 'success', 600);
                     setTimeout(() => {
                         window.location = 'products.html';
-                    }, 300);
+                    }, 1000);
                 })
                 .catch(err => {
-                    console.log(err.response.data);
-                    alert(err.response.data.message)
+                    swalMassage(`${err.response.data.message},請重新登入`,'error',600);
                 })
 
             // 清空登入欄位

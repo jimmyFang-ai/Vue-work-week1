@@ -11,9 +11,6 @@ const BASE_URL = "https://vue3-course-api.hexschool.io/v2/api";
 // 密碼: jim771014
 
 
-// 後台使用
-// const auth_token = "weyzH1bcy7OlBO4rWQR44F07FE23";
-
 
 // 前台使用者
 const userRequest = axios.create({
@@ -28,6 +25,14 @@ const userRequest = axios.create({
 
 // 後台管理者登入
 const adminLoginRequest = axios.create({
+    baseURL: "https://vue3-course-api.hexschool.io/v2",
+    // headers: {
+    //     'Content-Type': 'application/json',
+    // }
+});
+
+// 後台管理者登出
+const adminLogoutRequest = axios.create({
     baseURL: "https://vue3-course-api.hexschool.io/v2",
     // headers: {
     //     'Content-Type': 'application/json',
@@ -84,19 +89,20 @@ export const apiFilterProducts = (categoryStr) => userRequest.get(`/products?cat
 // 後台
 //  登入
 export const apiLogin = (data) => adminLoginRequest.post('/admin/signin', data);
+export const apiLogout = () => adminLogoutRequest.post('/logout');
 
 // 確認是否登入
 export const apiCheckLogin = () => adminRequest.post('/user/check');
 
 
 // 產品
-export const apiAdminGetProducts = () => adminRequest.get(`${apiPath}/admin/products/all`);
-export const apiAdminAddProduct = (data) => adminRequest.post(`${apiPath}/admin/product`,data);
-export const apiAdminRemoveProduct = (id) => adminRequest.delete(`${apiPath}/admin/product/${id}`);
+export const apiAdminGetProducts = () => adminRequest.get(`/${apiPath}/admin/products/all`);
+export const apiAdminAddProduct = (data) => adminRequest.post(`/${apiPath}/admin/product`,data);
+export const apiAdminRemoveProduct = (id) => adminRequest.delete(`/${apiPath}/admin/product/${id}`);
 
 
 // 檔案上傳
-export const apiAdminAddFile = (data) => adminRequest.post(`${apiPath}/admin/upload`,data);
+export const apiAdminAddFile = (data) => adminRequest.post(`/${apiPath}/admin/upload`,data);
 
 
 //  訂單 API

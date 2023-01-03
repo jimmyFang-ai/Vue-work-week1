@@ -40,35 +40,45 @@
 
     <div id="app">
         <div class="container">
-            <div class="row g-0 rounded-4 shadow">
-                <div class="col d-none d-md-block">
-                    <img class="rounded-start" src="./images/brooke-lark-08bOYnH_r_E-unsplash (3).jpg" alt="vegan"
-                        style="object-position: left">
-                </div>
-                <div class="col">
-                    <form class="form-signin  rounded-end" @submit.prevent="login">
-                        <div class="d-flex  justify-content-center  align-items-center  mb-3  mb-md-5">
-                            <img class="img-fluid" src="./images/vegan (1).png" alt="vegan"
-                                style="width: 36px; height: 36px;">
-                            <h3 class="ms-3 mb-0">管理者登入</h3>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10">
+                    <div class="row g-0 rounded-4 shadow">
+
+                        <div class="col d-none d-md-block">
+                            <img class="rounded-start" src="./images/brooke-lark-08bOYnH_r_E-unsplash (3).jpg"
+                                alt="vegan" style="object-position: left">
                         </div>
 
-                        <div class="form-floating mb-3  mb-md-5">
-                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
-                                v-model.trim="user.username" required>
-                            <label for="floatingInput">Email </label>
-                        </div>
-                        <div class="form-floating mb-3 mb-md-5">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
-                                v-model.trim="user.password" required>
-                            <label for="floatingPassword">Password</label>
-                        </div>
+                        <div class="col">
+                            <form class="form-signin  rounded-end" @submit.prevent="login">
+                                <div class="d-flex  justify-content-center  align-items-center  mb-3  mb-md-5">
+                                    <img class="img-fluid" src="./images/vegan (1).png" alt="vegan"
+                                        style="width: 36px; height: 36px;">
+                                    <h3 class="ms-3 mb-0">管理者登入</h3>
+                                </div>
 
-                        <div class="mt-auto">
-                            <button type="submit" class="btn btn-primary  w-100">登入</button>
+                                <div class="form-floating mb-3  mb-md-5">
+                                    <input type="email" class="form-control" id="floatingInput"
+                                        placeholder="name@example.com" v-model.trim="user.username" required>
+                                    <label for="floatingInput">Email </label>
+                                </div>
+                                <div class="form-floating mb-3 mb-md-5">
+                                    <input type="password" class="form-control" id="floatingPassword"
+                                        placeholder="Password" v-model.trim="user.password" required>
+                                    <label for="floatingPassword">Password</label>
+                                </div>
+
+                                <div class="mt-auto">
+                                    <button type="submit" class="btn btn-primary  w-100">登入</button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
+
+
+
+
             </div>
 
         </div>
@@ -80,6 +90,8 @@
 
 
 
+    <!-- sweetalert2.js -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="module" src="./javascript/login.js"></script>
 </body>
