@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Vue - week2 - 產品頁面</title>
+    <link rel="stylesheet" href="./stylesheet/all.css">
+</head>
+
+<body>
+
+    <div id="app">
+        <section class="py-5">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-lg-2  gy-5 gy-lg-0">
+                    <div class="col">
+                        <h2>產品列表</h2>
+                        <table class="table table-hover mt-4">
+                            <thead>
+                                <tr>
+                                    <th width="15%">產品名稱</th>
+                                    <th width="15%">
+                                        原價
+                                    </th>
+                                    <th width="15%">
+                                        售價
+                                    </th>
+                                    <th width="15%">
+                                        是否啟用
+                                    </th>
+                                    <th width="20%">
+                                        查看細節
+                                    </th>
+                                    <th width="20%">
+                                        刪除品項
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 列表渲染 v-for -->
+                                <tr v-for="product in products" :key="product.id">
+                                    <td>{{ product.title}}</td>
+                                    <td>
+                                        {{ product.origin_price}}
+                                    </td>
+                                    <td>
+                                        {{ product.price}}
+                                    </td>
+                                    <td>
+                                        <span :class="{'text-success': product.is_enabled}">{{product.is_enabled ? '啟用'
+                                            : '未啟用'}}</span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary"
+                                            @click="viewProduct(product)">查看細節</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger"
+                                            @click="deleteProduct(product)">刪除品項</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>目前有 <span>{{ products.length}}</span> 項產品</p>
+                    </div>
+
+
+                    <div class="col">
+                        <h2>單一產品細節</h2>
+
+                        <!-- 使用  template 標籤在編譯時，不會生成 html 結構-->
+                        <template v-if="tempProduct.id">
+                            <div class="card mb-3">
+                                <div class="ratio ratio-4x3">
+                                    <img :src="tempProduct.imageUrl" class="card-img-top" alt="主圖">
+                                </div>
+                                <!-- <img :src="temp.imageUrl" class="card-img-top primary-image" alt="主圖"> -->
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">
+                                        {{ tempProduct.title}}
+                                        <span class="badge bg-primary ms-2">{{ tempProduct.category}}</span>
+                                    </h5>
+                                    <p class="card-text">商品描述：<br>
+                                        {{ tempProduct.description}}
+                                    </p>
+                                    <p class="card-text mb-0">商品內容：</p>
+                                    <ul v-html="tempProduct.content"></ul>
+
+                                    <div>
+                                        <!-- <p class="card-text me-2">{{tempProduct.price }}</p> -->
+                                        <p class="card-text">餐點規格:<br></p>
+                                        <ul v-html="tempProduct.unit"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- 產品圖陣列 -->
+                            <div class="row row-cols-3 gy-3">
+                                <div v-for="image in tempProduct.imagesUrl" :key="image" class="col">
+                                    <div class="ratio ratio-4x3">
+                                        <img v-if="image" :src="image" class="rounded" @click="changeImage(image)">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </template>
+
+                        <p v-else class="text-secondary">請選擇一個商品查看</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+
+
+
+
+
+    <script type="module" src="./javascript/products.js"></script>
+</body>
+
+</html>

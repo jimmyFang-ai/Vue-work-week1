@@ -119,14 +119,13 @@
 
 
 
-    <!-- Vue 3 CDN -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
 
 
     <script type="module">
 
-        // 引入 Vue CND createApp 方法
-        const { createApp } = Vue;
+        // 使用 ES module 引入 Vue 3 cdn 並使用  createApp 方法
+        import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.esm-browser.min.js';
 
         // 作業功能:
         // 使用者可以查看產品列表
