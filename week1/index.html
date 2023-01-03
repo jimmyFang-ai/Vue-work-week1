@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue - week1</title>
+    <link rel="stylesheet" href="./stylesheet/all.css">
+</head>
+
+<body>
+
+    <div id="app">
+        <section class="py-5">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-lg-2  gy-5 gy-lg-0">
+                    <div class="col">
+                        <h2>產品列表</h2>
+                        <table class="table table-hover mt-4">
+                            <thead>
+                                <tr>
+                                    <th width="15%">產品名稱</th>
+                                    <th width="15%">
+                                        原價
+                                    </th>
+                                    <th width="15%">
+                                        售價
+                                    </th>
+                                    <th width="15%">
+                                        是否啟用
+                                    </th>
+                                    <th width="20%">
+                                        查看細節
+                                    </th>
+                                    <th width="20%">
+                                        刪除品項
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 列表渲染 v-for -->
+                                <tr v-for="product in products" :key="product.id">
+                                    <td>{{ product.title}}</td>
+                                    <td>
+                                        {{ product.origin_price}}
+                                    </td>
+                                    <td>
+                                        {{ product.price}}
+                                    </td>
+                                    <td>
+                                        <span :class="{'text-success': product.is_enabled}">{{product.is_enabled ? '啟用'
+                                            : '未啟用'}}</span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary"
+                                            @click="viewProduct(product)">查看細節</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger"
+                                            @click="deleteProduct(product)">刪除品項</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>目前有 <span>{{ products.length}}</span> 項產品</p>
+                    </div>
+
+
+                    <div class="col">
+                        <h2>單一產品細節</h2>
+
+                        <!-- 使用  template 標籤在編譯時，不會生成 html 結構-->
+                        <template v-if="tempProduct.id">
+                            <div class="card mb-3">
+                                <div class="ratio ratio-4x3">
+                                    <img :src="tempProduct.imageUrl" class="card-img-top" alt="主圖">
+                                </div>
+                                <!-- <img :src="temp.imageUrl" class="card-img-top primary-image" alt="主圖"> -->
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ tempProduct.title}}
+                                        <span class="badge bg-primary ms-2">{{ tempProduct.category}}</span>
+                                    </h5>
+                                    <p class="card-text">商品描述：{{ tempProduct.description}}</p>
+                                    <p class="card-text">商品內容：{{ tempProduct.content}}</p>
+                                    <div class="d-flex">
+                                        <p class="card-text me-2">{{tempProduct.price }}</p>
+                                        <p class="card-text text-secondary"><del>{{ tempProduct.origin_price}}</del></p>
+                                        {{tempProduct.unit}}/ 元
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- 產品圖陣列 -->
+                            <div class="row row-cols-3">
+                                <div v-for="image in tempProduct.imagesUrl" :key="image" class="col">
+                                    <div class="ratio ratio-4x3">
+                                        <img v-if="image" :src="image" class="rounded" @click="changeImage(image)">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </template>
+
+                        <p v-else class="text-secondary">請選擇一個商品查看</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+
+
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+
+    <script type="module">
+
+        // 引入 Vue CND createApp 方法
+        const { createApp } = Vue;
+
+        // 作業功能:
+        // 使用者可以查看產品列表
+        // 使用者可以點擊單一產品，查看詳細資訊
+
+
+        // 關注點分離
+        // 1. 定義資料 const App = {}
+        // 2. 生成 Vue 應用程式 createApp(App)
+        // 3. 渲染畫面 .mout('#app')
+
+
+        //   外部資料
+        const products = [
+            {
+                category: "甜甜圈",
+                content: "尺寸：14x14cm",
+                description: "濃郁的草莓風味，中心填入滑順不膩口的卡士達內餡，帶來滿滿幸福感！",
+                id: "-L9tH8jxVb2Ka_DYPwng",
+                is_enabled: 1,
+                origin_price: 150,
+                price: 99,
+                title: "草莓莓果夾心圈",
+                unit: "個",
+                num: 10,
+                imageUrl: "https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
+                imagesUrl: [
+                    "https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
+                    "https://images.unsplash.com/photo-1626094309830-abbb0c99da4a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2832&q=80",
+                    "https://images.unsplash.com/photo-1559656914-a30970c1affd?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY0fHxkb251dHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
+                ]
+            },
+            {
+                category: "蛋糕",
+                content: "尺寸：6寸",
+                description: "蜜蜂蜜蛋糕，夾層夾上酸酸甜甜的檸檬餡，清爽可口的滋味讓人口水直流！",
+                id: "-McJ-VvcwfN1_Ye_NtVA",
+                is_enabled: 1,
+                origin_price: 1000,
+                price: 900,
+                title: "蜂蜜檸檬蛋糕",
+                unit: "個",
+                num: 1,
+                imageUrl: "https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1001&q=80",
+                imagesUrl: [
+                    "https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1001&q=80",
+                    "https://images.unsplash.com/photo-1618888007540-2bdead974bbb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=987&q=80",
+                ]
+            },
+            {
+                category: "蛋糕",
+                content: "尺寸：6寸",
+                description: "法式煎薄餅加上濃郁可可醬，呈現經典的美味及口感。",
+                id: "-McJ-VyqaFlLzUMmpPpm",
+                is_enabled: 1,
+                origin_price: 700,
+                price: 600,
+                title: "暗黑千層",
+                unit: "個",
+                num: 15,
+                imageUrl: "https://images.unsplash.com/photo-1505253149613-112d21d9f6a9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDZ8fGNha2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
+                imagesUrl: [
+                    "https://images.unsplash.com/photo-1505253149613-112d21d9f6a9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDZ8fGNha2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
+                    "https://images.unsplash.com/flagged/photo-1557234985-425e10c9d7f1?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTA5fHxjYWtlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60",
+                    "https://images.unsplash.com/photo-1540337706094-da10342c93d8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDR8fGNha2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
+                ]
+            }
+        ];
+
+
+        // Vue 起手式架構
+        const App = {
+            // 資料(函式)
+            data() {
+                return {
+                    // 產品資料格式
+                    products: [],
+                    // 儲存單一產品
+                    tempProduct: {},
+                }
+            },
+            // 資料處理方法(物件)
+            methods: {
+                // 查看單一產品細節
+                viewProduct(product) {
+                    // 避免物件參考特性傳入的 product 要使用拷貝方式賦予到 temp 物件
+                    this.tempProduct = { ...product };
+                },
+                // 刪除單一產品
+                deleteProduct(product) {
+                    alert(`確定要刪除產品編號 ${product.title} 嗎?`)
+
+                    // 找出要刪除的產品索引值
+                    const deleteId = this.products.findIndex(item => item.id === product.id);
+                    // 將索引位置帶入並刪除
+                    this.products.splice(deleteId, 1);
+
+                    // 刪除後產品後，把 temp 清空
+                    // 避免刪除產品後，單一產品還會顯示資訊
+                    this.tempProduct = {};
+                },
+                // 點擊小圖換大圖
+                changeImage(img) {
+                    this.tempProduct.imageUrl = img;
+                }
+            },
+            // 生命週期(函式)
+            // 外部傳入的資料要在 created() 後才能寫入到 data 內
+            created() {
+                this.products = products;
+            },
+        };
+
+        // 將 App 元件生成並掛載到 html DOM 節點上
+        createApp(App).mount('#app');
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
