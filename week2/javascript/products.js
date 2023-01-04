@@ -27,7 +27,6 @@ createApp({
     // 資料(函式)
     data() {
         return {
-            text: "QQ",
             // 產品資料格式
             products: [],
             // 儲存單一產品
@@ -125,8 +124,6 @@ createApp({
     // 生命週期(函式)
     // 外部傳入的資料要在 created() 後才能寫入到 data 內
     mounted() {
-      
-
         // 進入產品頁時，先發送檢查是否登入 API 驗證
         this.checkLogin();
 
