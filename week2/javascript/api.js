@@ -2,7 +2,7 @@ import "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
 
 // apiPath
 const apiPath = "veganfoodtw2";
-const BASE_URL = "https://vue3-course-api.hexschool.io/v2/api";
+const BASE_URL = "https://vue3-course-api.hexschool.io/v2";
 
 
 
@@ -13,31 +13,14 @@ const BASE_URL = "https://vue3-course-api.hexschool.io/v2/api";
 
 
 // 前台使用者
-const userRequest = axios.create({
-    baseURL: `${BASE_URL}/${apiPath}`,
-    // heders 的  'Content-Type': 'application/json', 一定要附上嗎??
-    
-    // headers: {
-    //     'Content-Type': 'application/json',
-    // }
-});
+// const userRequest = axios.create({
+//     baseURL: `${BASE_URL}/${apiPath}`,
+//     // heders 的  'Content-Type': 'application/json', 一定要附上嗎??
 
-
-// 後台管理者登入
-const adminLoginRequest = axios.create({
-    baseURL: "https://vue3-course-api.hexschool.io/v2",
-    // headers: {
-    //     'Content-Type': 'application/json',
-    // }
-});
-
-// 後台管理者登出
-const adminLogoutRequest = axios.create({
-    baseURL: "https://vue3-course-api.hexschool.io/v2",
-    // headers: {
-    //     'Content-Type': 'application/json',
-    // }
-});
+//     // headers: {
+//     //     'Content-Type': 'application/json',
+//     // }
+// });
 
 
 
@@ -51,12 +34,11 @@ const adminRequest = axios.create({
 
 
 
-// 測試有登入後 將 token 取出來，在所有的headers ['Authorization'] 加入 token
+// // 測試有登入後 將 token 取出來，在所有的headers ['Authorization'] 加入 token
 adminRequest.interceptors.request.use(
     (config) => {
         // 取出存在瀏覽器的 cookie 內的 vegnaToken
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)vegenToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-      
 
         // 如果 token 存在的話，則帶入到 headers 當中
         if (token) {
@@ -88,21 +70,21 @@ export const apiFilterProducts = (categoryStr) => userRequest.get(`/products?cat
 
 // 後台
 //  登入
-export const apiLogin = (data) => adminLoginRequest.post('/admin/signin', data);
-export const apiLogout = () => adminLogoutRequest.post('/logout');
-
+export const apiLogin = (data) => adminRequest.post('/admin/signin', data);
+// 登出
+export const apiLogout = () => adminRequest.post('/logout');
 // 確認是否登入
-export const apiCheckLogin = () => adminRequest.post('/user/check');
+export const apiCheckLogin = () => adminRequest.post('/api/user/check');
 
 
 // 產品
-export const apiAdminGetProducts = () => adminRequest.get(`/${apiPath}/admin/products/all`);
-export const apiAdminAddProduct = (data) => adminRequest.post(`/${apiPath}/admin/product`,data);
-export const apiAdminRemoveProduct = (id) => adminRequest.delete(`/${apiPath}/admin/product/${id}`);
+export const apiAdminGetProducts = () => adminRequest.get(`/api/${apiPath}/admin/products/all`);
+export const apiAdminAddProduct = (data) => adminRequest.post(`/api/${apiPath}/admin/product`, data);
+export const apiAdminRemoveProduct = (id) => adminRequest.delete(`/api/${apiPath}/admin/product/${id}`);
 
 
 // 檔案上傳
-export const apiAdminAddFile = (data) => adminRequest.post(`/${apiPath}/admin/upload`,data);
+export const apiAdminAddFile = (data) => adminRequest.post(`/api/${apiPath}/admin/upload`, data);
 
 
 //  訂單 API

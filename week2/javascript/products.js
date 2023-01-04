@@ -53,13 +53,16 @@ createApp({
         },
         // 登出 (錯誤 400)
         logout() {
-
             apiLogout()
                 .then(res => {
                     console.log(res);
+                    swalMassage(`${res.data.message}`, 'success', 600);
+                    setTimeout(() => {
+                        window.location = 'login.html';
+                    }, 1000);
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.log(err.response);
                 })
         },
         // 取得所有產品列表
@@ -117,11 +120,13 @@ createApp({
         // 關閉 modal
         closeProductModal() {
             productModal.hide();
-        }
+        },
     },
     // 生命週期(函式)
     // 外部傳入的資料要在 created() 後才能寫入到 data 內
     mounted() {
+      
+
         // 進入產品頁時，先發送檢查是否登入 API 驗證
         this.checkLogin();
 
