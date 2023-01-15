@@ -9,7 +9,9 @@ import { swalMassage } from './utils.js';
 import {
     apiCheckLogin,
     apiAdminGetProducts,
+    apiAdminAddProduct,
     apiAdminRemoveProduct,
+    apiAdminUpdateProduct,
     apiLogout
 } from './api.js';
 
@@ -18,7 +20,8 @@ import {
 
 // bootstrap modal 實體化
 // 套用 modal 方法
-let productModal = '';
+let productModal = null;
+let delProductModal = null;
 
 
 
@@ -30,8 +33,26 @@ createApp({
             // 產品資料格式
             products: [],
             // 儲存單一產品
-            tempProduct: {},
+            isNew: false,
+            tempProduct: {
+                imagesUrl: [],
+            },
         }
+    },
+    // 生命週期(函式)
+    // 外部傳入的資料要在 created() 後才能寫入到 data 內
+    mounted() {
+        // 進入產品頁時，先發送檢查是否登入 API 驗證
+        this.checkLogin();
+
+        // 等待元件完成生成後再來取得 modal DOM 元素，並實體化 modal
+        productModal = new bootstrap.Modal(document.querySelector('#productModal'), {
+            keyboard: false
+        });
+
+        delProductModal = new bootstrap.Modal(document.querySelector('#delProductModal'), {
+            keyboard: false
+        });
     },
     // 資料處理方法(物件)
     methods: {
@@ -54,7 +75,6 @@ createApp({
         logout() {
             apiLogout()
                 .then(res => {
-                    console.log(res);
                     swalMassage(`${res.data.message}`, 'success', 600);
                     setTimeout(() => {
                         window.location = 'login.html';
@@ -75,60 +95,70 @@ createApp({
                     console.log(err.response);
                 })
         },
-        // 查看單一產品細節
-        viewProduct(product) {
-            this.openProductModal();
-            // 避免物件參考特性傳入的 product 要使用拷貝方式賦予到 temp 物件
-            this.tempProduct = { ...product };
+        // 打開 modal
+        openModal(isNew, item) {
+            if (isNew === 'new') {
+                this.tempProduct = {
+                    imagesUrl: []
+                };
+                this.isNew = true;
+                productModal.show();
+            } else if (isNew === 'edit') {
+                this.tempProduct = { ...item }
+                this.isNew = false;
+                productModal.show();
+            } else if (isNew === 'delete') {
+                this.tempProduct = { ...item }
+                delProductModal.show();
+            }
         },
         // 刪除單一產品
-        deleteProduct(product) {
-            Swal.fire({
-                title: `確定要刪除產品 ${product.title} 嗎?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '確定',
-                cancelButtonText: '取消',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalMassage(`產品  ${product.title} 已成功刪除`, 'success', 500);
-                    apiAdminRemoveProduct(product.id)
-                        .then(res => {
-                            console.log(res);
-                            this.getProdcuts();
-                        })
-                        .catch(err => {
-                            console.log(err.response);
-                        })
-                }
-            });
-            // 刪除後產品後，把 temp 清空
-            // 避免刪除產品後，單一產品還會顯示資訊
-            this.tempProduct = {};
+        deleteProduct() {
+            apiAdminRemoveProduct(this.tempProduct.id)
+                .then(res => {
+                    swalMassage(`${this.tempProduct.title} 已刪除成功 `, 'success', 600)
+                    delProductModal.hide();
+                    this.getProdcuts();
+                })
+                .catch(err => {
+                    console.log(err.response);
+                })
         },
-        // 點擊小圖換大圖
-        changeImage(img) {
-            this.tempProduct.imageUrl = img;
+        // 新增單一產品
+        addProduct() {
+            apiAdminAddProduct({ data: this.tempProduct })
+                .then(res => {
+                    swalMassage(res.data.message, 'success', 600);
+                    productModal.hide()
+                    this.getProdcuts();
+                })
+                .catch(err => {
+                    console.log(err.response);
+                })
         },
-        // 打開 modal
-        openProductModal() {
-            productModal.show();
+        // 編輯單一產品
+        updateProduct() {
+            apiAdminUpdateProduct(this.tempProduct.id, { data: this.tempProduct })
+                .then(res => {
+                    swalMassage(res.data.message, 'success', 600);
+                    productModal.hide()
+                    this.getProdcuts();
+                })
+                .catch(err => {
+                    console.log(err.response);
+                })
         },
-        // 關閉 modal
-        closeProductModal() {
-            productModal.hide();
+        //  更新產品(新增或編輯)
+        confirmEdit() {
+            // 如果為 true 就是新增, false 為 編輯
+            this.isNew ? this.addProduct() : this.updateProduct();
+        },
+        // 新增圖片
+        createImages() {
+            this.tempProduct.imagesUrl = [];
+            this.tempProduct.imagesUrl.push('');
         },
     },
-    // 生命週期(函式)
-    // 外部傳入的資料要在 created() 後才能寫入到 data 內
-    mounted() {
-        // 進入產品頁時，先發送檢查是否登入 API 驗證
-        this.checkLogin();
 
-        // 等待元件完成生成後再來取得 modal DOM 元素，並實體化 modal
-        productModal = new bootstrap.Modal(document.querySelector('#modal'));
-    }
 }).mount('#app')
 

@@ -83,6 +83,7 @@ export const apiCheckLogin = () => adminRequest.post('/api/user/check');
 export const apiAdminGetProducts = () => adminRequest.get(`/api/${apiPath}/admin/products/all`);
 export const apiAdminAddProduct = (data) => adminRequest.post(`/api/${apiPath}/admin/product`, data);
 export const apiAdminRemoveProduct = (id) => adminRequest.delete(`/api/${apiPath}/admin/product/${id}`);
+export const apiAdminUpdateProduct = (id,data) => adminRequest.put(`/api/${apiPath}/admin/product/${id}`,data);
 
 
 // 檔案上傳
