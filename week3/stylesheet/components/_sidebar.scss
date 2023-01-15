@@ -1,0 +1,48 @@
+$sidebar-width: 280px;
+
+// 行動版(預設)
+.sidebar{
+    width: $sidebar-width;
+    margin-left: -$sidebar-width;
+    transition: margin-left .25s; 
+ };
+ 
+ .main{
+    width: 100%;
+ };
+ 
+
+
+// 展開 sidebar
+.sidebar-toggled {
+  .sidebar {
+    margin-left: 0;
+  }
+};
+
+
+// 桌機板
+@include media-breakpoint-up(lg) { 
+     .sidebar{
+        width: $sidebar-width;
+        margin-left: 0;
+     };
+     
+     .main{
+        width: calc(100vw - #{$sidebar-width});
+     };
+
+
+    //  展開
+    .sidebar-toggled {
+        .sidebar {
+          margin-left: -$sidebar-width;
+        }
+
+        .main {
+            width: 100%;
+            margin-left: 0;
+        }
+      };
+      
+};

@@ -1,0 +1,19 @@
+// 引入  bootstrap 套件
+@import "../node_modules/bootstrap/scss/functions";
+
+// bootstrap 變數檔案(客製化)
+@import "./helpers/variables";
+
+// bootstrap 完整樣式
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+
+
+
+// 客製化
+// base
+@import "./base/reset";
+
+
+// components
+@import "./components/sidebar";
