@@ -15,7 +15,7 @@
         - [x] 刪除單一品項
         - [x] 使用 bootstrap modal(彈跳視窗)
         - [x] 登出
-- [第三週作業]()
+- [第三週作業](https://jimmyfang-ai.github.io/Vue-works/week3/login)
      - [x] 作業功能:
         - [x] 建置產品資料(10筆以上)
         - [x] 使用者可以**新增**產品列表(productModal)
