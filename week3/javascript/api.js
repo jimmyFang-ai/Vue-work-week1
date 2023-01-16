@@ -2,8 +2,8 @@ import "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
 
 // apiPath
 
-const apiPath = "veganfoodtw2"; // 測試用
-// const apiPath = "veganfoodtw3"; // 正式版
+// const apiPath = "veganfoodtw2"; // 測試用
+const apiPath = "veganfoodtw3"; // 正式版
 const BASE_URL = "https://vue3-course-api.hexschool.io/v2";
 
 
@@ -83,7 +83,7 @@ export const apiCheckLogin = () => adminRequest.post('/api/user/check');
 export const apiAdminGetProducts = () => adminRequest.get(`/api/${apiPath}/admin/products/all`);
 export const apiAdminAddProduct = (data) => adminRequest.post(`/api/${apiPath}/admin/product`, data);
 export const apiAdminRemoveProduct = (id) => adminRequest.delete(`/api/${apiPath}/admin/product/${id}`);
-export const apiAdminUpdateProduct = (id,data) => adminRequest.put(`/api/${apiPath}/admin/product/${id}`,data);
+export const apiAdminUpdateProduct = (id, data) => adminRequest.put(`/api/${apiPath}/admin/product/${id}`, data);
 
 
 // 檔案上傳

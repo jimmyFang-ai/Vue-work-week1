@@ -38,6 +38,8 @@ createApp({
             },
             // 判斷是否為新增
             isNew: false,
+            // 篩選類別
+            selectedCategory: "",
         }
     },
     // 生命週期(函式)
@@ -54,6 +56,29 @@ createApp({
         delProductModal = new bootstrap.Modal(document.querySelector('#delProductModal'), {
             keyboard: false
         });
+    },
+    computed: {
+        // 計算類別數量
+        filterCategoryNum() {
+            return Object.values(this.products).reduce((acc, { category }) => {
+                if (acc[category] === undefined) {
+                    acc[category] = 1;
+                } else {
+                    acc[category] += 1;
+                };
+                return acc;
+            }, {})
+        },
+        // 去除重複類別
+        filterCategory() {
+            return Array.from(new Set(Object.values(this.products).map(item => item.category)));
+        },
+        // 渲染篩選產品資料
+        filterProduct() {
+            const seletedProduct = Object.values(this.products).filter(item => item.category === this.selectedCategory);
+
+            return this.selectedCategory === "" ? Object.values(this.products) : seletedProduct;
+        }
     },
     // 資料處理方法(物件)
     methods: {
@@ -111,7 +136,7 @@ createApp({
                 this.isNew = false;
                 productModal.show();
             } else if (isNew === 'delete') {
-                  // 帶入要刪除資料
+                // 帶入要刪除資料
                 this.tempProduct = { ...item }
                 delProductModal.show();
             }
