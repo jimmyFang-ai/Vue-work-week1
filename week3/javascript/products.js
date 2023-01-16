@@ -33,10 +33,11 @@ createApp({
             // 產品資料格式
             products: [],
             // 儲存單一產品
-            isNew: false,
             tempProduct: {
                 imagesUrl: [],
             },
+            // 判斷是否為新增
+            isNew: false,
         }
     },
     // 生命週期(函式)
@@ -98,16 +99,19 @@ createApp({
         // 打開 modal
         openModal(isNew, item) {
             if (isNew === 'new') {
+                // 初始化資料
                 this.tempProduct = {
                     imagesUrl: []
                 };
                 this.isNew = true;
                 productModal.show();
             } else if (isNew === 'edit') {
+                // 帶入要編輯資料
                 this.tempProduct = { ...item }
                 this.isNew = false;
                 productModal.show();
             } else if (isNew === 'delete') {
+                  // 帶入要刪除資料
                 this.tempProduct = { ...item }
                 delProductModal.show();
             }
