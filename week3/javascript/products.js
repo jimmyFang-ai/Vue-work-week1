@@ -188,6 +188,5 @@ createApp({
             this.tempProduct.imagesUrl.push('');
         },
     },
-
 }).mount('#app')
 
